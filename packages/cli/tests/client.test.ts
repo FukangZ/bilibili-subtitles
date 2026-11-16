@@ -1,7 +1,10 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import { test } from "node:test";
 import { createStageClient } from "../dist/client.js";
 import { requireModelConfig } from "../dist/config.js";
+
+const packageVersion: string = JSON.parse(readFileSync(new URL("../package.json", import.meta.url), "utf8")).version;
 
 function config(api: "openai-completions" | "openai-responses" | "anthropic-messages" = "openai-completions") {
   return requireModelConfig({ api, baseUrl: api === "anthropic-messages" ? "https://models.example" : "https://models.example/v1", model: "demo-model", apiKey: "private-api-key", contextWindow: 32000, maxTokens: 4096, timeoutMs: 1000 });
@@ -47,7 +50,7 @@ test("pi-ai routes each API, sends explicit credentials and UA, blocks redirects
       assert.equal(new URL(url).pathname, item.path);
       assert.equal(init?.redirect, "error");
       const headers = new Headers(init?.headers);
-      assert.equal(headers.get("user-agent"), "bili-subs/0.1.0");
+      assert.equal(headers.get("user-agent"), `bili-subs/${packageVersion}`);
       assert.equal(headers.has("authorization") || headers.has("x-api-key"), true);
       const body = JSON.parse(String(init?.body));
       const budget = body.max_tokens ?? body.max_completion_tokens ?? body.max_output_tokens;
