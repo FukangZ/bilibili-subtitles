@@ -1,0 +1,27 @@
+{
+  "name": "@fukangz/cli-bilibili-subtitles",
+  "version": "0.1.0",
+  "description": "Standalone CLI for existing Bilibili Chinese subtitles",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FukangZ/bilibili-subtitles.git",
+    "directory": "packages/cli"
+  },
+  "homepage": "https://github.com/FukangZ/bilibili-subtitles/tree/HEAD/packages/cli#readme",
+  "bugs": {
+    "url": "https://github.com/FukangZ/bilibili-subtitles/issues"
+  },
+  "type": "module",
+  "bin": { "bili-subs": "./dist/main.js" },
+  "files": ["dist/", "skills/", "README.md"],
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "check": "tsc --noEmit",
+    "test": "node --experimental-strip-types --test --test-concurrency=1 tests/*.test.ts"
+  },
+  "engines": { "node": ">=22.19.0" },
+  "dependencies": { "@earendil-works/pi-ai": "^1.5.2", "@fukangz/core-bilibili-subtitles": "^0.1.0" },
+  "devDependencies": { "@types/node": "^22.15.30" },
+  "publishConfig": { "access": "public", "registry": "https://registry.npmjs.org/" }
+}

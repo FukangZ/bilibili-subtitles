@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="330" viewBox="0 0 1200 330" role="img" aria-labelledby="wf-title wf-desc">
+  <title id="wf-title">bilibili-subtitles 下载与两步润色工作流程</title>
+  <desc id="wf-desc">三阶段处理流程：第一阶段输入 BV 号或视频链接，按人工优先于 AI、简体优先于繁体挑选最佳中文字幕保存为 transcript.md（零模型开销）；第二阶段由大模型通读全文生成总标题并切分多级章节结构；第三阶段逐章节合拢碎句、修正同音错字，并挂上原视频时间跳转链接组装为 transcript.polished.md。</desc>
+
+  <!-- Outer Canvas Background -->
+  <rect x="2" y="2" width="1196" height="326" rx="24" fill="#FFFDFB" stroke="#E7DFD7" stroke-width="2"/>
+
+  <!-- Top Track Labels -->
+  <g transform="translate(44, 24)">
+    <rect x="0" y="0" width="332" height="30" rx="15" fill="#EFECE7"/>
+    <text x="166" y="21" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Noto Sans CJK SC', 'Microsoft YaHei', sans-serif" font-size="16" font-weight="700" fill="#57534E">默认仅下载（零大模型开销）</text>
+
+    <rect x="382" y="0" width="730" height="30" rx="15" fill="#FFF0F5" stroke="#F9C6D5" stroke-width="1"/>
+    <text x="747" y="21" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Noto Sans CJK SC', 'Microsoft YaHei', sans-serif" font-size="16" font-weight="700" fill="#D94873">明确执行润色时：大模型两步精校 + 代码挂载跳转链接</text>
+  </g>
+
+  <!-- Step 1 Card: Download -->
+  <g id="step-download" transform="translate(44, 70)">
+    <rect x="0" y="0" width="332" height="224" rx="18" fill="#F7F6F4" stroke="#DED8D0" stroke-width="1.5"/>
+    <!-- Step Badge -->
+    <circle cx="34" cy="34" r="16" fill="#57534E"/>
+    <text x="34" y="40" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="17" font-weight="700" fill="#FFFFFF">1</text>
+    <text x="60" y="41" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Noto Sans CJK SC', 'Microsoft YaHei', sans-serif" font-size="21" font-weight="800" fill="#18181B">下载最佳中文字幕</text>
+
+    <text x="22" y="82" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Noto Sans CJK SC', 'Microsoft YaHei', sans-serif" font-size="18" fill="#3F3F46">输入 BV 号或 B 站视频链接</text>
+    <text x="22" y="114" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Noto Sans CJK SC', 'Microsoft YaHei', sans-serif" font-size="18" fill="#52525B">• 人工字幕优先于 AI 字幕</text>
+    <text x="22" y="144" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Noto Sans CJK SC', 'Microsoft YaHei', sans-serif" font-size="18" fill="#52525B">• 简体中文优先于繁体中文</text>
+
+    <!-- Output File Pill -->
+    <rect x="22" y="168" width="288" height="38" rx="10" fill="#FFFFFF" stroke="#D6D3D1" stroke-width="1.2"/>
+    <text x="166" y="193" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="17" font-weight="700" fill="#27272A">输出 → transcript.md</text>
+  </g>
+
+  <!-- Arrow 1 -> 2 -->
+  <g transform="translate(382, 166)">
+    <line x1="0" y1="16" x2="36" y2="16" stroke="#FB7299" stroke-width="3" stroke-dasharray="4 3"/>
+    <path d="M30 8 L40 16 L30 24" fill="none" stroke="#FB7299" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+
+  <!-- Step 2 Card: Structure Generation -->
+  <g id="step-structure" transform="translate(426, 70)">
+    <rect x="0" y="0" width="336" height="224" rx="18" fill="#FFFFFF" stroke="#F9A8D4" stroke-width="1.8"/>
+    <!-- Step Badge -->
+    <circle cx="34" cy="34" r="16" fill="#FB7299"/>
+    <text x="34" y="40" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="17" font-weight="700" fill="#FFFFFF">2</text>
+    <text x="60" y="41" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Noto Sans CJK SC', 'Microsoft YaHei', sans-serif" font-size="21" font-weight="800" fill="#18181B">第一步：结构生成</text>
+
+    <text x="22" y="82" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Noto Sans CJK SC', 'Microsoft YaHei', sans-serif" font-size="18" fill="#3F3F46">大模型先通读完整原始字幕</text>
+    <text x="22" y="114" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Noto Sans CJK SC', 'Microsoft YaHei', sans-serif" font-size="18" fill="#52525B">• 拟定贴合原意的文章总标题</text>
+    <text x="22" y="144" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Noto Sans CJK SC', 'Microsoft YaHei', sans-serif" font-size="18" fill="#52525B">• 划分导语与 ## / ### 多级章节</text>
+
+    <!-- Intermediate Output Pill -->
+    <rect x="22" y="168" width="292" height="38" rx="10" fill="#FFF7FA" stroke="#F9C6D5" stroke-width="1.2"/>
+    <text x="168" y="193" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Noto Sans CJK SC', 'Microsoft YaHei', sans-serif" font-size="17" font-weight="700" fill="#BE185D">锁定每节起止字幕边界</text>
+  </g>
+
+  <!-- Arrow 2 -> 3 -->
+  <g transform="translate(768, 166)">
+    <line x1="0" y1="16" x2="36" y2="16" stroke="#FB7299" stroke-width="3"/>
+    <path d="M30 8 L40 16 L30 24" fill="none" stroke="#FB7299" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+
+  <!-- Step 3 Card: Body Generation & Assembly -->
+  <g id="step-polish" transform="translate(812, 70)">
+    <rect x="0" y="0" width="344" height="224" rx="18" fill="#FFFFFF" stroke="#FB7299" stroke-width="2"/>
+    <!-- Step Badge -->
+    <circle cx="34" cy="34" r="16" fill="#00AEEC"/>
+    <text x="34" y="40" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="17" font-weight="700" fill="#FFFFFF">3</text>
+    <text x="60" y="41" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Noto Sans CJK SC', 'Microsoft YaHei', sans-serif" font-size="21" font-weight="800" fill="#18181B">第二步：正文与组装</text>
+
+    <text x="22" y="82" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Noto Sans CJK SC', 'Microsoft YaHei', sans-serif" font-size="18" fill="#3F3F46">按章节分组精校，不删减原意</text>
+    <text x="22" y="114" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Noto Sans CJK SC', 'Microsoft YaHei', sans-serif" font-size="18" fill="#52525B">• 合拢碎句、去口水词、修同音字</text>
+    <text x="22" y="144" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Noto Sans CJK SC', 'Microsoft YaHei', sans-serif" font-size="18" fill="#52525B">• 按每节起点挂上 [▶ 分:秒] 链接</text>
+
+    <!-- Final Output File Pill -->
+    <rect x="18" y="168" width="308" height="38" rx="10" fill="#E6F7FD" stroke="#7DD3FC" stroke-width="1.2"/>
+    <text x="172" y="193" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="16.5" font-weight="700" fill="#0284C7">输出 → transcript.polished.md</text>
+  </g>
+</svg>

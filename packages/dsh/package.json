@@ -1,0 +1,54 @@
+{
+  "name": "@fukangz/dsh-bilibili-subtitles",
+  "version": "0.1.0",
+  "description": "DeepSeek Harness plugin for existing Bilibili Chinese subtitles",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FukangZ/bilibili-subtitles.git",
+    "directory": "packages/dsh"
+  },
+  "homepage": "https://github.com/FukangZ/bilibili-subtitles/tree/HEAD/packages/dsh#readme",
+  "bugs": {
+    "url": "https://github.com/FukangZ/bilibili-subtitles/issues"
+  },
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "icon": "./icon.svg",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./client": "./client.js",
+    "./package.json": "./package.json",
+    "./icon": "./icon.svg",
+    "./locale/*.json": "./locale/*.json"
+  },
+  "files": ["dist/", "client.js", "cordis.patch.yml", "locale/", "icon.svg", "README.md"],
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "check": "tsc --noEmit",
+    "test": "node --experimental-strip-types --test --test-concurrency=1 tests/*.test.ts"
+  },
+  "engines": { "node": ">=22", "dsh": ">=0.2.2-rc.1 <0.3.0" },
+  "dsh": {
+    "bundle": { "patch": "./cordis.patch.yml" },
+    "client": {
+      "platform": "web",
+      "inject": [
+        "@deepseek-ai/dsh-client-locale",
+        "@deepseek-ai/dsh-client-ui-settings",
+        "@deepseek-ai/dsh-client-ui-plugin-manager",
+        "@deepseek-ai/dsh-client-ui-layout"
+      ]
+    }
+  },
+  "dependencies": {
+    "@deepseek-ai/schemastery": "~3.19.0",
+    "@fukangz/core-bilibili-subtitles": "^0.1.1"
+  },
+  "devDependencies": { "@types/node": "^22.15.30" },
+  "publishConfig": { "access": "public", "registry": "https://registry.npmjs.org/" }
+}

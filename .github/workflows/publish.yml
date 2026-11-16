@@ -1,0 +1,51 @@
+name: Publish to npm
+
+on:
+  push:
+    tags:
+      - 'core-v*'
+      - 'pi-v*'
+      - 'cli-v*'
+      - 'dsh-v*'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: npm-publish-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/prepare
+      - name: Select and verify release workspace
+        id: release
+        run: node scripts/release.mjs
+      - name: Validate local release metadata
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: node scripts/preflight.mjs "$RELEASE_TAG" --offline
+      - name: Install locked dependencies
+        run: npm ci --legacy-peer-deps
+      # Root check builds once; test workspaces directly rather than rebuilding.
+      - name: Type check all packages
+        run: npm run check
+      - name: Test all packages
+        run: node --test --test-concurrency=1 scripts/*.test.mjs && npm test --workspaces --if-present
+      - name: Verify real package distributions
+        run: npm run verify:packages
+      - name: Verify registry release prerequisites (read-only)
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: node scripts/preflight.mjs "$RELEASE_TAG" --registry
+      - name: Publish selected package using npm trusted publishing
+        env:
+          RELEASE_WORKSPACE: ${{ steps.release.outputs.workspace }}
+        run: npm publish --workspace "$RELEASE_WORKSPACE" --access public

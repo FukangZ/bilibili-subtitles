@@ -1,0 +1,52 @@
+{
+  "name": "@fukangz/pi-bilibili-subtitles",
+  "version": "0.1.0",
+  "description": "下载哔哩哔哩中文字幕，并精校为忠实原话、带章节跳转的 Markdown 全文文稿",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FukangZ/bilibili-subtitles.git",
+    "directory": "packages/pi"
+  },
+  "homepage": "https://github.com/FukangZ/bilibili-subtitles/tree/HEAD/packages/pi#readme",
+  "bugs": {
+    "url": "https://github.com/FukangZ/bilibili-subtitles/issues"
+  },
+  "keywords": [
+    "pi-package",
+    "bilibili",
+    "subtitles"
+  ],
+  "files": [
+    "src/",
+    "README.md",
+    "bilibili-subtitles.example.json"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "type": "module",
+  "pi": {
+    "extensions": [
+      "./src/index.ts"
+    ]
+  },
+  "scripts": {
+    "link-peers": "node scripts/link-peers.mjs",
+    "check": "node scripts/link-peers.mjs && tsc --noEmit",
+    "test": "node scripts/link-peers.mjs && node --experimental-strip-types --test --test-concurrency=1 tests/*.test.ts"
+  },
+  "peerDependencies": {
+    "@earendil-works/pi-ai": "*",
+    "@earendil-works/pi-coding-agent": "*",
+    "@earendil-works/pi-tui": "*",
+    "typebox": "*"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.30"
+  },
+  "dependencies": {
+    "@fukangz/core-bilibili-subtitles": "^0.1.0"
+  }
+}

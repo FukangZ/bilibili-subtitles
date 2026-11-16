@@ -1,0 +1,3 @@
+- insert:
+    - id: bilibili-subtitles
+      name: '@fukangz/dsh-bilibili-subtitles'

@@ -1,0 +1,21 @@
+node_modules/
+dist/
+.subtitles/
+*.log
+
+# 仓库根目录的本地 AI agent 配置
+/AGENTS.md
+/CLAUDE.md
+/GEMINI.md
+/skills-lock.json
+/.agents/
+/.codex/
+/.claude/
+/.pi/
+/.cursor/
+/.gemini/
+/.opencode/
+
+# 本地工单与个人维护规则（保留本地文件）
+/.scratch/
+/docs/agents/

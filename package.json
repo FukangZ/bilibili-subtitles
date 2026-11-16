@@ -1,0 +1,26 @@
+{
+  "name": "bilibili-subtitles-monorepo",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Bilibili subtitle tools and host integrations",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "npm run build --workspace @fukangz/core-bilibili-subtitles && npm run build --workspace @fukangz/cli-bilibili-subtitles && npm run build --workspace @fukangz/dsh-bilibili-subtitles",
+    "check": "npm run build && npm run check --workspaces --if-present",
+    "test": "npm run build && node --test --test-concurrency=1 scripts/*.test.mjs && npm test --workspaces --if-present",
+    "verify:packages": "node scripts/verify-packages.mjs",
+    "release:preflight": "node scripts/preflight.mjs",
+    "pack:core": "npm pack --dry-run --workspace @fukangz/core-bilibili-subtitles",
+    "pack:cli": "npm pack --dry-run --workspace @fukangz/cli-bilibili-subtitles",
+    "pack:pi": "npm pack --dry-run --workspace @fukangz/pi-bilibili-subtitles",
+    "pack:dsh": "npm pack --dry-run --workspace @fukangz/dsh-bilibili-subtitles"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "devDependencies": {
+    "typescript": "^5.8.3"
+  }
+}

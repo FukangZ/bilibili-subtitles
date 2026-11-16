@@ -1,0 +1,116 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="400" viewBox="0 0 1200 400" role="img" aria-labelledby="hero-title hero-desc">
+  <title id="hero-title">bilibili-subtitles — 把破碎的 B 站字幕整理为结构清晰、忠实原话的 Markdown 全文</title>
+  <desc id="hero-desc">Bilibili Subtitles 项目首屏横幅：支持扫码获取 B 站现有中文字幕，并按需切分多级章节、修正同音错字与碎句、保留原话细节，同时在每个章节标题旁附带原视频时间跳转链接。</desc>
+
+  <!-- Outer Card Background -->
+  <rect x="2" y="2" width="1196" height="396" rx="24" fill="#FFFDFB" stroke="#E7DFD7" stroke-width="2"/>
+
+  <!-- Left Column: Brand & Value Proposition -->
+  <g id="title-block" transform="translate(56, 50)">
+    <!-- Bilibili Subtitle TV Motif + Eyebrow -->
+    <g id="eyebrow">
+      <path d="M9 6 L15 11 M27 6 L21 11" stroke="#FB7299" stroke-width="2.6" stroke-linecap="round"/>
+      <rect x="2" y="10" width="32" height="24" rx="7" fill="#FB7299"/>
+      <rect x="8" y="16" width="9" height="3" rx="1.5" fill="#FFFFFF"/>
+      <rect x="19" y="16" width="9" height="3" rx="1.5" fill="#FFFFFF"/>
+      <rect x="8" y="22" width="20" height="3" rx="1.5" fill="#FFFFFF"/>
+
+      <text x="46" y="27" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Noto Sans CJK SC', 'Microsoft YaHei', sans-serif" font-size="18" font-weight="700" fill="#D94873" letter-spacing="0.5">B 站字幕下载与精校 · 支持 Coding Agent 与终端</text>
+    </g>
+
+    <!-- Project Name -->
+    <text x="0" y="96" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Noto Sans CJK SC', 'Microsoft YaHei', sans-serif" font-size="52" font-weight="800" fill="#18181B" letter-spacing="-0.8">Bilibili Subtitles</text>
+
+    <!-- Plain-language Headline -->
+    <text x="0" y="152" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Noto Sans CJK SC', 'Microsoft YaHei', sans-serif" font-size="25" font-weight="700" fill="#27272A">把破碎的 B 站字幕，整理为结构清晰、</text>
+    <text x="0" y="188" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Noto Sans CJK SC', 'Microsoft YaHei', sans-serif" font-size="25" font-weight="700" fill="#27272A">忠实原话的 Markdown 全文</text>
+
+    <!-- Concise Feature Summary -->
+    <text x="0" y="232" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Noto Sans CJK SC', 'Microsoft YaHei', sans-serif" font-size="18" font-weight="500" fill="#64748B">扫码即用 · 多级章节切分 · 同音错字修正 · 不做缩水摘要</text>
+
+    <!-- Host Integration Pills -->
+    <g id="host-pills" transform="translate(0, 260)">
+      <rect x="0" y="0" width="136" height="38" rx="19" fill="#FFF0F5" stroke="#F9C6D5" stroke-width="1.5"/>
+      <circle cx="22" cy="19" r="5" fill="#FB7299"/>
+      <text x="36" y="25" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Noto Sans CJK SC', 'Microsoft YaHei', sans-serif" font-size="18" font-weight="700" fill="#BE185D">Pi 插件</text>
+
+      <rect x="148" y="0" width="154" height="38" rx="19" fill="#EFFBFF" stroke="#BAE6FD" stroke-width="1.5"/>
+      <circle cx="170" cy="19" r="5" fill="#00AEEC"/>
+      <text x="184" y="25" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Noto Sans CJK SC', 'Microsoft YaHei', sans-serif" font-size="18" font-weight="700" fill="#0284C7">dsh 插件</text>
+
+      <rect x="314" y="0" width="204" height="38" rx="19" fill="#F4F4F5" stroke="#E4E4E7" stroke-width="1.5"/>
+      <circle cx="336" cy="19" r="5" fill="#52525B"/>
+      <text x="350" y="25" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Noto Sans CJK SC', 'Microsoft YaHei', sans-serif" font-size="18" font-weight="700" fill="#27272A">通用 CLI + Skill</text>
+    </g>
+  </g>
+
+  <!-- Right Column: Project-Native Specimen Proof -->
+  <g id="project-proof" transform="translate(616, 22)">
+    <!-- Back Card: Raw Subtitle Specimen -->
+    <g id="raw-card" transform="translate(0, 0)">
+      <rect x="0" y="0" width="496" height="162" rx="16" fill="#F6F5F3" stroke="#DED8D0" stroke-width="1.5"/>
+      <!-- File Tab Header -->
+      <circle cx="22" cy="23" r="5" fill="#A1A1AA"/>
+      <text x="36" y="28" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="18" font-weight="700" fill="#52525B">transcript.md</text>
+      <rect x="364" y="10" width="114" height="26" rx="13" fill="#EAE6E1"/>
+      <text x="421" y="28" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Noto Sans CJK SC', 'Microsoft YaHei', sans-serif" font-size="15" font-weight="600" fill="#57534E">原始 AI 字幕</text>
+      <line x1="16" y1="43" x2="480" y2="43" stroke="#E5E0D8" stroke-width="1"/>
+
+      <!-- Raw Fragmented Lines -->
+      <text x="20" y="71" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="18" fill="#8C857B">00:35</text>
+      <text x="84" y="71" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Noto Sans CJK SC', 'Microsoft YaHei', sans-serif" font-size="18" fill="#57534E">呃看右边架构图，核心概念叫</text>
+      <rect x="322" y="51" width="84" height="26" rx="6" fill="#FEE2E2"/>
+      <text x="364" y="70" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Noto Sans CJK SC', 'Microsoft YaHei', sans-serif" font-size="18" font-weight="700" fill="#DC2626">算术墙度</text>
+
+      <text x="20" y="104" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="18" fill="#8C857B">00:49</text>
+      <text x="84" y="104" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Noto Sans CJK SC', 'Microsoft YaHei', sans-serif" font-size="18" fill="#57534E">逐个生成</text>
+      <rect x="160" y="84" width="48" height="26" rx="6" fill="#FEE2E2"/>
+      <text x="184" y="103" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Noto Sans CJK SC', 'Microsoft YaHei', sans-serif" font-size="18" font-weight="700" fill="#DC2626">托肯</text>
+      <text x="212" y="104" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Noto Sans CJK SC', 'Microsoft YaHei', sans-serif" font-size="18" fill="#57534E">的时候，</text>
+
+      <text x="20" y="137" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="18" fill="#8C857B">01:09</text>
+      <text x="84" y="137" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Noto Sans CJK SC', 'Microsoft YaHei', sans-serif" font-size="18" fill="#57534E">真正瓶颈在于</text>
+      <rect x="196" y="117" width="84" height="26" rx="6" fill="#FEE2E2"/>
+      <text x="238" y="136" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Noto Sans CJK SC', 'Microsoft YaHei', sans-serif" font-size="18" font-weight="700" fill="#DC2626">显存带款</text>
+      <text x="284" y="137" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Noto Sans CJK SC', 'Microsoft YaHei', sans-serif" font-size="18" fill="#57534E">不够用</text>
+    </g>
+
+    <!-- Front Card: Polished Markdown Specimen -->
+    <g id="polished-card" transform="translate(32, 184)">
+      <rect x="6" y="6" width="500" height="168" rx="16" fill="#F3ECE6"/>
+      <rect x="0" y="0" width="500" height="168" rx="16" fill="#FFFFFF" stroke="#FB7299" stroke-width="2"/>
+
+      <!-- File Tab Header -->
+      <circle cx="22" cy="25" r="5" fill="#FB7299"/>
+      <text x="36" y="30" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="18" font-weight="700" fill="#18181B">transcript.polished.md</text>
+      <rect x="376" y="12" width="106" height="26" rx="13" fill="#FFF0F5"/>
+      <text x="429" y="30" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Noto Sans CJK SC', 'Microsoft YaHei', sans-serif" font-size="15" font-weight="700" fill="#D94873">精校全文</text>
+      <line x1="16" y1="47" x2="484" y2="47" stroke="#F4ECE8" stroke-width="1.5"/>
+
+      <!-- Structured Heading + Jump Badge -->
+      <text x="20" y="80" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Noto Sans CJK SC', 'Microsoft YaHei', sans-serif" font-size="20" font-weight="800" fill="#18181B">## 算术强度与显存带宽</text>
+      <rect x="250" y="59" width="86" height="28" rx="14" fill="#E6F7FD" stroke="#7DD3FC" stroke-width="1.2"/>
+      <text x="293" y="79" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="16" font-weight="700" fill="#0284C7">▶ 0:35</text>
+
+      <!-- Clean Paragraph Strictly Derived from Raw Lines Above -->
+      <text x="20" y="116" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Noto Sans CJK SC', 'Microsoft YaHei', sans-serif" font-size="18" fill="#3F3F46">看右边架构图，核心概念叫</text>
+      <rect x="240" y="96" width="86" height="26" rx="6" fill="#DCFCE7"/>
+      <text x="283" y="115" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Noto Sans CJK SC', 'Microsoft YaHei', sans-serif" font-size="18" font-weight="700" fill="#15803D">算术强度</text>
+      <text x="330" y="116" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Noto Sans CJK SC', 'Microsoft YaHei', sans-serif" font-size="18" fill="#3F3F46">。</text>
+
+      <text x="20" y="148" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Noto Sans CJK SC', 'Microsoft YaHei', sans-serif" font-size="18" fill="#3F3F46">逐个生成</text>
+      <rect x="96" y="128" width="66" height="26" rx="6" fill="#DCFCE7"/>
+      <text x="129" y="147" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="18" font-weight="700" fill="#15803D">Token</text>
+      <text x="166" y="148" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Noto Sans CJK SC', 'Microsoft YaHei', sans-serif" font-size="18" fill="#3F3F46">时，真正瓶颈在于</text>
+      <rect x="314" y="128" width="86" height="26" rx="6" fill="#DCFCE7"/>
+      <text x="357" y="147" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Noto Sans CJK SC', 'Microsoft YaHei', sans-serif" font-size="18" font-weight="700" fill="#15803D">显存带宽</text>
+      <text x="404" y="148" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Noto Sans CJK SC', 'Microsoft YaHei', sans-serif" font-size="18" fill="#3F3F46">不够用。</text>
+    </g>
+
+    <!-- Connector Badge Rendered on Top -->
+    <g id="transform-arrow" transform="translate(208, 158)">
+      <rect x="0" y="0" width="116" height="30" rx="15" fill="#FB7299" stroke="#FFFFFF" stroke-width="2.5"/>
+      <text x="58" y="20" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Noto Sans CJK SC', 'Microsoft YaHei', sans-serif" font-size="15" font-weight="700" fill="#FFFFFF">↓ 精校成文</text>
+    </g>
+  </g>
+</svg>

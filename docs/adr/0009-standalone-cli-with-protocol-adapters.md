@@ -1,0 +1,23 @@
+---
+status: accepted
+---
+
+# CLI 独立运行，并复用模型协议适配器
+
+## 为什么除了宿主插件还提供 CLI
+
+为每个 Coding Agent 开发原生插件会增加接入成本，也让只需要终端工具的用户依赖无关宿主。因此 `bili-subs` 是独立进程：提供下载、润色、登录和配置命令，也可配合随包 Skill 被其他 Agent 调用。它不继承 Pi 或 dsh 会话，不读取项目模型配置或其他入口的凭据。
+
+命令层负责参数、终端与退出码，模型协议层转换为 core 的 `StageClient`。这让 core 不必认识进程和用户交互，命令路径也能通过注入输入输出、网络和取消信号测试。
+
+## 为什么使用 pi-ai，而不是自行解析 SSE
+
+CLI 通过独立的 `@earendil-works/pi-ai` 库支持 OpenAI Chat Completions、OpenAI Responses 和 Anthropic Messages；它依赖该协议库，但不依赖 Pi Agent 宿主。复用请求构造、流解析和供应商差异，比维护三套解析器更集中，代价是增加库及其 provider SDK 依赖，并接受其用量规范化语义。
+
+CLI 仍自行判断哪些结果能交给 core：只接受正常完成的非空纯文本，拒绝截断、工具调用与异常终态。它显式关闭自动重试并阻止重定向，避免一次长文本阶段在适配层静默重复；core 的一次格式修复仍是独立业务行为。
+
+## 接受的限制
+
+通用协议适配不保证所有兼容网关行为一致，连接预检也不证明全文能成功或质量合格。pi-ai 将缺报用量规范化为零，当前 CLI 无法据此区分未报告与真实零，不能把用量完整状态当成供应商账单证明。
+
+CLI 当前主要面向人和 Agent 读取终端结果，没有稳定 JSON 输出协议；需要类型化结果的程序应使用 core。具体协议、终态、用量限制与退出码集中维护在 [CLI README](../../packages/cli/README.md#模型协议与结果约定)，实现入口为 `packages/cli/src/client.ts` 和 `packages/cli/src/commands.ts`。

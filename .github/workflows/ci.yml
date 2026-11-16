@@ -1,0 +1,41 @@
+name: CI
+
+on:
+  push:
+    branches: ['**']
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/prepare
+      - run: npm ci --legacy-peer-deps
+      # Root check builds once; run tests directly to avoid another full build.
+      - run: npm run check
+      - run: node --test --test-concurrency=1 scripts/*.test.mjs
+      - run: npm test --workspaces --if-present
+      - run: node scripts/preflight.mjs --offline
+
+  distribution-node22:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/prepare
+        with:
+          node-version: '22'
+          pi-host: 'false'
+      - run: npm ci --legacy-peer-deps
+      - run: npm run build
+      # Real tarballs and an isolated install; no Pi host or workspace links.
+      - run: npm run verify:packages

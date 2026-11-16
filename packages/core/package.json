@@ -1,0 +1,35 @@
+{
+  "name": "@fukangz/core-bilibili-subtitles",
+  "version": "0.1.1",
+  "description": "Host-independent Bilibili subtitle download and polishing workflows",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FukangZ/bilibili-subtitles.git",
+    "directory": "packages/core"
+  },
+  "homepage": "https://github.com/FukangZ/bilibili-subtitles/tree/HEAD/packages/core#readme",
+  "bugs": {
+    "url": "https://github.com/FukangZ/bilibili-subtitles/issues"
+  },
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./prompts/*": "./prompts/*"
+  },
+  "files": ["dist/", "prompts/", "README.md"],
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "check": "tsc --noEmit",
+    "test": "node --experimental-strip-types --test --test-concurrency=1 tests/*.test.ts"
+  },
+  "engines": { "node": ">=22" },
+  "publishConfig": { "access": "public", "registry": "https://registry.npmjs.org/" },
+  "devDependencies": { "@types/node": "^22.15.30" },
+  "dependencies": { "qrcode-generator": "^2.0.4", "yaml": "^2.9.0" }
+}
