@@ -51,23 +51,29 @@ test("入口不依赖命令服务，仅注册两个工具与配置页登录路�
   });
 });
 
-test("实际工具定义约束调用、原样路径和默认简短交付", async () => {
+test("工具定义使用精简说明并保留参数约束", async () => {
   await withDir(async (cwd) => {
     const host = fakeHost({ cwd });
     apply(host.ctx, { get: () => ({}) });
     const download = host.tools.get("bilibili_download_subtitle")!;
     const polish = host.tools.get("bilibili_polish_subtitle")!;
-    assert.match(download.description, /无中文字幕.*报告原因.*语音识别.*翻译/);
-    assert.match(download.description, /仅.*用户要求.*润色.*文章/);
-    for (const tool of [download, polish]) {
-      assert.match(tool.description, /默认.*路径.*简短统计/);
-      assert.match(tool.description, /不主动读取全文.*不自行编辑/);
-      assert.match(tool.description, /用户.*要求.*检查.*讨论/);
-      assert.match(tool.description, /dsh 插件设置页/);
-    }
-    assert.match(polish.description, /原始字幕 Markdown.*旧 JSON/);
-    assert.match(polish.description, /失败.*分类.*阶段.*不.*重复整条/);
-    assert.match(polish.parameters.properties?.transcriptPath.description ?? "", /原样.*transcriptPath.*空格.*中文.*标点.*不.*重建路径/);
+    assert.equal(download.description, "下载 B 站视频指定分 P 的现有中文字幕，保存为 Markdown，返回 transcriptPath。");
+    assert.equal(polish.description, "仅在用户要求润色或整理成文章时，将原始 B 站中文字幕忠实润色为带视频时间链接的 Markdown 文章，返回 outputPath。会产生模型用量。");
+    const parameterDescriptions = (tool: typeof download) => Object.fromEntries(
+      Object.entries(tool.parameters.properties ?? {}).map(([key, schema]) => [key, schema.description]),
+    );
+    assert.deepEqual(parameterDescriptions(download), {
+      source: "BV 号或 bilibili.com/video/BV… 链接，不支持 b23.tv 短链。",
+      page: "分 P 序号，从 1 开始。默认取链接中的 p，否则为 1；与链接中的 p 冲突时报错。",
+      outputDir: "工作目录内的相对输出目录，默认 .subtitles；使用 . 表示当前目录。",
+    });
+    assert.deepEqual(parameterDescriptions(polish), {
+      transcriptPath: "工作目录内的原始 B 站字幕 Markdown 相对路径。使用下载结果时，原样传入 transcriptPath，不要重建路径。",
+      outputPath: "工作目录内的文章相对路径。省略时在原字幕旁生成 <文件名>.polished.md；已存在则自动编号。不要传空字符串。",
+    });
+    assert.deepEqual(download.parameters.required, ["source"]);
+    assert.deepEqual(polish.parameters.required, ["transcriptPath"]);
+    assert.equal(polish.parameters.properties?.outputPath.minLength, 1);
     assert.equal("promptGuidelines" in download, false);
     assert.equal("promptGuidelines" in polish, false);
   });
@@ -136,6 +142,16 @@ test("润色跟随会话模型，两阶段写出文章并汇总用量", async ()
     assert.match(article, /第一章/);
     const rendered = polish.output.render({}, result)[0].text;
     assert.match(rendered, /用量：输入 20，输出 10，缓存读 4/);
+  });
+});
+
+test("空 outputPath 按未提供处理并使用默认文章路径", async () => {
+  await withDir(async (cwd) => {
+    const host = fakeHost({ cwd, streams: [text(structure), text(bodies)] });
+    const [download, polish] = createTools({ ctx: host.ctx, config: () => ({}), fetch: biliFetch() as typeof fetch });
+    const downloaded = (await download.execute({ source: "BV1test" }, exec())) as { transcriptPath: string };
+    const result = (await polish.execute({ transcriptPath: downloaded.transcriptPath, outputPath: "" }, exec())) as { outputPath: string };
+    assert.equal(result.outputPath, downloaded.transcriptPath.replace(/\.md$/, ".polished.md"));
   });
 });
 

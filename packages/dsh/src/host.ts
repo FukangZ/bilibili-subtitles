@@ -96,6 +96,7 @@ export interface DshCredentials {
 
 export interface JsonSchemaNode {
   type?: "object" | "array" | "string" | "number" | "integer" | "boolean" | "null";
+  minLength?: number;
   properties?: Record<string, JsonSchemaNode>;
   required?: string[];
   additionalProperties?: boolean;

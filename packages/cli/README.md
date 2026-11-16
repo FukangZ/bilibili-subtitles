@@ -23,10 +23,10 @@ bili-subs login
 
 ```sh
 # 传入 BV 号或 B 站视频链接
-bili-subs download BV1xx411c7mD
+bili-subs download BV1EXAMPLE01
 
 # 可选：指定第 2 分 P 与自定义输出目录
-bili-subs download "https://www.bilibili.com/video/BV1xx411c7mD/" --page 2 --out ./notes
+bili-subs download "https://www.bilibili.com/video/BV1EXAMPLE01/" --page 2 --out ./notes
 ```
 
 下载后默认保存在 `.subtitles/<BV号>-<视频标题>/transcript.md`。
@@ -47,6 +47,18 @@ bili-subs polish .subtitles/<视频目录>/transcript.md
 ```
 
 润色完成后，默认在原始字幕旁生成 `transcript.polished.md`（重复生成会自动编号，不覆盖旧文件）。
+
+### 4. 配合 Coding Agent 使用（安装 Skill）
+
+如果你使用 **Claude Code、Codex、Cursor** 等 Agent，可以将随包附带的 `bilibili-subtitles` Skill 复制到对应 Agent 的 skills 目录中：
+
+```sh
+# 通用 Agent 目录（Claude Code 可改为 ~/.claude/skills/）
+mkdir -p ~/.agents/skills
+cp -R "$(npm root -g)/@fukangz/cli-bilibili-subtitles/skills/bilibili-subtitles" ~/.agents/skills/
+```
+
+配置完成后，在 Agent 对话中说 *“帮我下载示例视频 BV1EXAMPLE01 的字幕并润色成文章”*，Agent 就会按需调用 `bili-subs`。
 
 ## 命令一览
 
@@ -123,15 +135,3 @@ CLI 将输入、输出、缓存、推理及总 token 映射为 core 用量，失
 交互式 `config` 与 `login` 需要终端；其他命令可从脚本调用。离线测试用模拟 fetch 驱动 pi-ai 真实协议解析器，覆盖三种 API、终态、脱敏、用量和取消；不证明具体网关兼容性或真实生成质量。
 
 协议参考：[pi-ai](https://github.com/earendil-works/pi/tree/main/packages/ai)、[OpenAI Chat Completions](https://platform.openai.com/docs/api-reference/chat)、[OpenAI Responses](https://platform.openai.com/docs/api-reference/responses)、[Anthropic Messages](https://docs.anthropic.com/en/api/messages)。
-
-## 配合 Coding Agent 使用（安装 Skill）
-
-如果你使用 **Claude Code、Codex、Cursor** 等 Agent，可以将随包附带的 `bilibili-subtitles` Skill 复制到对应 Agent 的 skills 目录中：
-
-```sh
-# 通用 Agent 目录（Claude Code 可改为 ~/.claude/skills/）
-mkdir -p ~/.agents/skills
-cp -R "$(npm root -g)/@fukangz/cli-bilibili-subtitles/skills/bilibili-subtitles" ~/.agents/skills/
-```
-
-配置完成后，直接在 Agent 对话中说 *“帮我下载 BV... 的字幕并润色成文章”*，Agent 就会自动按需调用 `bili-subs` 完成任务。

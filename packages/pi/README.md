@@ -15,6 +15,8 @@ Pi 扩展：下载哔哩哔哩（B 站）视频**已有的中文字幕**，并�
    pi install npm:@fukangz/pi-bilibili-subtitles
    ```
 
+   安装后向 Agent 注册两个工具：`bilibili_download_subtitle` 按 BV 号或 B 站链接下载原始中文字幕，`bilibili_polish_subtitle` 将下载的字幕忠实润色成文章，并附上原片时间跳转链接。Agent 会按你的请求自行调用。
+
 2. **扫码登录 B 站**
 
    在 Pi 交互式终端运行 `/bilibili-login`，用手机 B 站 App 扫描终端二维码并确认（获取 B 站 AI 自动生成字幕通常需要登录）。登录状态保存在 `~/.pi/agent/bilibili-subtitles.credentials.json`，与普通配置分开，立即生效，无需重启 Pi。
@@ -22,8 +24,8 @@ Pi 扩展：下载哔哩哔哩（B 站）视频**已有的中文字幕**，并�
 3. **在对话中使用**
 
    直接用自然语言告诉 Pi 你的需求：
-   - **只下原始字幕**：“帮我下载 `BV1xx411c7mD` 的字幕”
-   - **下载并润色成文**：“把 `https://www.bilibili.com/video/BV1xx411c7mD/?p=2` 的字幕下载下来，并润色成 Markdown 文章”
+   - **只下原始字幕**：“帮我下载示例视频 `BV1EXAMPLE01` 的字幕”
+   - **下载并润色成文**：“把示例链接 `https://www.bilibili.com/video/BV1EXAMPLE01/?p=2` 的字幕下载下来，并润色成 Markdown 文章”
    - **润色已有字幕**：“把 `.subtitles/.../transcript.md` 润色成文章”
 
 ## 输出文件与使用边界

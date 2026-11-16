@@ -31,11 +31,11 @@ export interface ToolDeps {
 const downloadParameters: JsonSchemaNode = {
   type: "object",
   properties: {
-    source: { type: "string", description: "BV 号，或 https://www.bilibili.com/video/BV... 链接。不支持 b23.tv 短链。" },
-    page: { type: "integer", description: "分P序号，从 1 开始。与链接里的 p 冲突则报错。缺省时使用链接中的 p，否则为第 1 分P。" },
+    source: { type: "string", description: "BV 号或 bilibili.com/video/BV… 链接，不支持 b23.tv 短链。" },
+    page: { type: "integer", description: "分 P 序号，从 1 开始。默认取链接中的 p，否则为 1；与链接中的 p 冲突时报错。" },
     outputDir: {
       type: "string",
-      description: "相对当前工作目录且不能超出该目录的输出目录。`.` 表示当前目录。默认使用 .subtitles。",
+      description: "工作目录内的相对输出目录，默认 .subtitles；使用 . 表示当前目录。",
     },
   },
   required: ["source"],
@@ -47,11 +47,12 @@ const polishParameters: JsonSchemaNode = {
   properties: {
     transcriptPath: {
       type: "string",
-      description: "原样传入 bilibili_download_subtitle 返回的 transcriptPath，保留空格、中文和标点，不要凭标题重建路径。仅接受原始字幕 Markdown，相对当前工作目录且不能超出该目录；不是 BV、视频链接、润色文章或旧 JSON。",
+      description: "工作目录内的原始 B 站字幕 Markdown 相对路径。使用下载结果时，原样传入 transcriptPath，不要重建路径。",
     },
     outputPath: {
       type: "string",
-      description: "最终文章的相对文件路径，不能超出当前工作目录；当前目录示例：./文章.md。缺省时写到原始字幕旁边的 <文件名>.polished.md。已存在时自动编号，不覆盖。",
+      minLength: 1,
+      description: "工作目录内的文章相对路径。省略时在原字幕旁生成 <文件名>.polished.md；已存在则自动编号。不要传空字符串。",
     },
   },
   required: ["transcriptPath"],
@@ -103,7 +104,7 @@ export function createTools(deps: ToolDeps): ToolDefinition[] {
   return [
     {
       name: DOWNLOAD_TOOL,
-      description: "下载一个分P的一条现有中文字幕为 Markdown，返回 transcriptPath。不支持弹幕或音视频下载。无中文字幕时报告原因，不改做媒体下载、语音识别或翻译。仅在用户要求润色或整理成文章时调用 bilibili_polish_subtitle。默认交付路径和简短统计，不主动读取全文，也不自行编辑产物；用户明确要求检查或讨论内容时可以读取相关内容，编辑仍须符合用户请求。登录与配置均在 dsh 插件设置页完成。",
+      description: "下载 B 站视频指定分 P 的现有中文字幕，保存为 Markdown，返回 transcriptPath。",
       parameters: downloadParameters,
       output: { schema: downloadOutput, render: (_args, value) => [{ type: "text", text: renderDownload(value as DownloadResult) }] },
       async execute(args, exec) {
@@ -130,7 +131,7 @@ export function createTools(deps: ToolDeps): ToolDefinition[] {
     },
     {
       name: POLISH_TOOL,
-      description: "仅在用户要求润色或整理成文章时，将原始字幕 Markdown 忠实润色成带视频时间链接的文章，返回 outputPath；不接受润色文章或旧 JSON，不做摘要或外语翻译。会调用模型并产生用量。默认交付路径和简短统计，不主动读取全文，也不自行编辑产物；用户明确要求检查或讨论内容时可以读取相关内容，编辑仍须符合用户请求。失败时报告分类和阶段，不因未知错误自行重复整条润色流程。登录与配置均在 dsh 插件设置页完成。",
+      description: "仅在用户要求润色或整理成文章时，将原始 B 站中文字幕忠实润色为带视频时间链接的 Markdown 文章，返回 outputPath。会产生模型用量。",
       parameters: polishParameters,
       output: { schema: polishOutput, render: (_args, value) => [{ type: "text", text: renderPolish(value as PolishResult) }] },
       async execute(args, exec) {
@@ -187,7 +188,7 @@ function parsePolishArgs(args: unknown): { transcriptPath: string; outputPath?: 
   const transcriptPath = record.transcriptPath;
   if (typeof transcriptPath !== "string" || !transcriptPath) invalid("transcriptPath 必须是非空字符串");
   const result: { transcriptPath: string; outputPath?: string } = { transcriptPath };
-  if (record.outputPath !== undefined) {
+  if (record.outputPath !== undefined && record.outputPath !== "") {
     if (typeof record.outputPath !== "string" || !record.outputPath) invalid("outputPath 必须是非空字符串");
     result.outputPath = record.outputPath;
   }
