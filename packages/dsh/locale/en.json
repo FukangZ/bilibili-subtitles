@@ -1,6 +1,6 @@
 {
   "meta": {
     "title": "Bilibili Subtitles",
-    "description": "Download existing Chinese subtitles from Bilibili and polish them into articles with timestamp links."
+    "description": "Download existing Chinese subtitles from Bilibili and turn fragmented lines into a readable chaptered Markdown article with links back to the video."
   }
 }

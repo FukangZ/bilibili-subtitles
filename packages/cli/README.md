@@ -2,7 +2,7 @@
 
 [![npm version](https://img.shields.io/npm/v/@fukangz/cli-bilibili-subtitles)](https://www.npmjs.com/package/@fukangz/cli-bilibili-subtitles)
 
-独立的命令行工具 `bili-subs`（附带通用 Agent Skill）：下载哔哩哔哩（B 站）视频**已有的中文字幕**，并按需润色为带章节视频时间链接的 Markdown 全文。
+独立的命令行工具 `bili-subs`（附带通用 Agent Skill）：下载哔哩哔哩（B 站）视频**已有的中文字幕**；需要成文时，再通过大模型按讲述脉络切分章节、修顺零散错乱的台词，并附上每个章节对应的原视频跳转链接，生成一篇忠实原话、像文章一样好读的 Markdown 全文。
 
 - **独立运行**：需要 Node.js 22.19+，无需 Pi Agent 或 dsh 宿主；模型请求由 `pi-ai` 适配 OpenAI Chat Completions、OpenAI Responses 和 Anthropic Messages。
 - **效果预览**：原始字幕与润色文章的完整对比示例见[项目主 README](../../README.md#你能拿到什么从碎台词到可读文章)。

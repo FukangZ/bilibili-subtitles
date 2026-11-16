@@ -2,7 +2,7 @@
 
 [![npm version](https://img.shields.io/npm/v/@fukangz/core-bilibili-subtitles)](https://www.npmjs.com/package/@fukangz/core-bilibili-subtitles)
 
-与宿主无关的 B 站中文字幕下载和忠实润色工作流核心库。只处理视频已有中文字幕；不下载音视频、不做语音识别、不翻译外语字幕。
+CLI、Pi 扩展与 dsh 插件共用的核心库（不依赖任何 Agent 宿主）：下载 B 站视频已有的中文字幕，并按讲述脉络切分章节、修顺零散台词，附上每个章节对应的原视频跳转链接，生成一篇忠实原话、像文章一样好读的 Markdown 全文。只处理视频已有中文字幕；不下载音视频、不做语音识别、不翻译外语字幕。
 
 项目的整体设计动机、输入输出文件示例与各宿主安装包入口见 [项目主 README](../../README.md)。
 

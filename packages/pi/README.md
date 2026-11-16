@@ -2,7 +2,7 @@
 
 [![npm version](https://img.shields.io/npm/v/@fukangz/pi-bilibili-subtitles)](https://www.npmjs.com/package/@fukangz/pi-bilibili-subtitles)
 
-Pi 扩展：下载哔哩哔哩（B 站）视频**已有的中文字幕**，并在你明确要求时，将原始字幕忠实润色为带章节视频时间链接的 Markdown 文章。
+Pi 扩展：下载哔哩哔哩（B 站）视频**已有的中文字幕**；当你明确要求润色时，再通过大模型按讲述脉络切分章节、修顺零散错乱的台词，并附上每个章节对应的原视频跳转链接，生成一篇忠实原话、像文章一样好读的 Markdown 全文。
 
 - **按需润色**：仅下载字幕不调用大模型（零模型开销）；要求润色时才调用当前 Pi 会话模型（或你指定的模型）。
 - **效果预览**：原始字幕与润色文章的完整对比示例见[项目主 README](../../README.md#你能拿到什么从碎台词到可读文章)。
