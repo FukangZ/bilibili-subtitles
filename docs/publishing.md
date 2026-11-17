@@ -11,13 +11,13 @@
 | `cli-v0.1.0` | `@fukangz/cli-bilibili-subtitles` | `bili-subs` -> `dist/main.js`，附 Skill |
 | `dsh-v0.1.0` | `@fukangz/dsh-bilibili-subtitles` | `dist/index.js`、`client.js`、`cordis.patch.yml`、locale |
 
-示例版本应换成对应包 `package.json` 中的真实版本。`scripts/release.mjs` 仍负责单包选择：只接受稳定版 `core-vX.Y.Z` / `pi-vX.Y.Z` / `cli-vX.Y.Z` / `dsh-vX.Y.Z`，核对包名、非 private 和该包版本，不使用根包版本。旧 `v*` 标签不触发发布；预发布标签也不通过选择校验。
+示例版本应换成对应包 `package.json` 中的真实版本。`scripts/release.mjs` 仍负责单包选择：只接受稳定版 `core-vX.Y.Z` / `pi-vX.Y.Z` / `cli-vX.Y.Z` / `dsh-vX.Y.Z`，核对包名、非 private 和该包版本，不使用根包版本。项目级 `v*` 标签（见下节 GitHub Release）不触发发布；预发布标签也不通过选择校验。
 
 ## 三种不同操作
 
 - **源码 push / PR**：`.github/workflows/ci.yml` 在分支 push 与 PR 上执行普通 CI；只有只读仓库权限，不发布 npm、不创建 GitHub Release。
 - **包版本 tag push**：`.github/workflows/publish.yml` 仅由四类包标签触发；验证全部包后，仅对选定 workspace 执行 `npm publish`。它不是四包联发。
-- **GitHub Release**：网页发布说明与附件，独立于源码 push 和 npm 发布。当前没有自动创建 Release；需要时由维护者手动整理说明。轻量记录目标包、版本、用户可见变动、兼容性与执行过的验证即可，不引入版本管理框架。
+- **GitHub Release**：网页发布说明与附件，独立于源码 push 和 npm 发布。当前没有自动创建 Release；需要时由维护者手动整理说明。轻量记录目标包、版本、用户可见变动、兼容性与执行过的验证即可，不引入版本管理框架。Release 挂在项目级标签 `vX.Y.Z` 上：它只用于 Release 与源码归档，不触发 CI 或 npm 发布，与根包 `package.json` 版本无关。四包同版本联发时取该共同版本号，并指向与四个包标签相同的发布提交；各包版本分叉后如何编号，届时再定。
 
 这些都是不同的远端写操作，必须分别有明确授权；不能为了验证 CI 随意创建或推送标签。
 

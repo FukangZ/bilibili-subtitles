@@ -77,7 +77,7 @@ npm run verify:packages -- --offline
 
 ## 发布与交付
 
-[按包发布指南](docs/publishing.md) 是发布流程的唯一说明。根包 private；tag 形如 `core-v*` / `pi-v*` / `cli-v*` / `dsh-v*`，一个 tag 只选一个 workspace，顺序上 core 先于依赖它的适配包。
+[按包发布指南](docs/publishing.md) 是发布流程的唯一说明。根包 private；tag 形如 `core-v*` / `pi-v*` / `cli-v*` / `dsh-v*`，一个 tag 只选一个 workspace，顺序上 core 先于依赖它的适配包。项目级 `v*` 标签只用于 GitHub Release，不触发 npm 发布。
 
 - `node scripts/preflight.mjs --offline` 检查四包元数据、许可与 core 版本范围；`node scripts/preflight.mjs <包-vX.Y.Z> --registry` 是发布前的匿名只读联网门禁，拒绝已发布的版本号，并要求所依赖的 core 版本已能从 registry 取得（含 SHA-512 校验）。首次手动建包与每包 Trusted Publisher 配置见发布指南。
 - push、tag、publish、新增依赖、真实付费调用都需要明确授权；目标不明时先确认。
