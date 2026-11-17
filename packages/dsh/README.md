@@ -2,11 +2,11 @@
 
 [![npm version](https://img.shields.io/npm/v/@fukangz/dsh-bilibili-subtitles)](https://www.npmjs.com/package/@fukangz/dsh-bilibili-subtitles)
 
-DeepSeek Harness（dsh）插件：下载哔哩哔哩（B 站）视频**已有的中文字幕**；当你明确要求润色时，再通过大模型按讲述脉络切分章节、修顺零散错乱的台词，并附上每个章节对应的原视频跳转链接，生成一篇忠实原话、像文章一样好读的 Markdown 全文。
+DeepSeek Harness（dsh）插件：把哔哩哔哩（B 站）长视频整理成一篇忠实原话、像文章一样好读的 Markdown 全文。它基于视频已有的中文字幕，按讲述脉络切分章节、修顺零散错乱的台词，并在每个章节旁附上原视频跳转链接。
 
-- **按需润色**：仅下载字幕不调用大模型（零模型开销）；要求润色时默认复用当前 dsh 会话模型。
+- **两步完成**：先下载原始字幕，再润色成文。下载不调用模型；润色时默认复用当前 dsh 会话模型。只需要原始字幕时可以停在第一步。
 - **环境要求**：Node.js 22+，dsh `>=0.2.2-rc.1 <0.3.0`。
-- **效果预览**：原始字幕与润色文章的完整对比示例见[项目主 README](../../README.md#你能拿到什么从碎台词到可读文章)。
+- **效果预览**：原始字幕与润色文章的完整对比示例见[项目主 README](https://github.com/FukangZ/bilibili-subtitles/blob/main/README.md#你能拿到什么从碎台词到可读文章)。
 
 ## 快速开始
 
@@ -17,17 +17,17 @@ DeepSeek Harness（dsh）插件：下载哔哩哔哩（B 站）视频**已有的
    ```
    安装后重启 dsh 生效。
 
-   插件向 Agent 注册两个工具：`bilibili_download_subtitle` 按 BV 号或 B 站链接下载原始中文字幕，`bilibili_polish_subtitle` 将下载的字幕忠实润色成文章，并附上原片时间跳转链接。Agent 会按你的请求自行调用。
+   插件向 Agent 注册两个工具，分别对应整理的两步：`bilibili_download_subtitle` 按 BV 号或 B 站链接下载原始中文字幕，`bilibili_polish_subtitle` 将下载的字幕忠实润色成文章，并附上原片时间跳转链接。Agent 会按你的请求自行调用。
 
 2. **扫码登录 B 站**
 
-   在 **dsh Web 界面的插件管理页**找到本插件，点击 **“扫码登录”**，使用手机 B 站 App 扫描弹窗二维码并确认（获取 B 站 AI 自动生成字幕通常需要登录）。
+   在 **dsh Web 界面的插件管理页**找到本插件，点击 **“扫码登录”**，使用手机 B 站 App 扫描弹窗二维码并确认（获取 B 站 AI 自动生成字幕通常需要登录）。登录成功后，Cookie 会持久保存在 dsh 的凭据服务中（不写入项目配置，也不会发给模型）。
 
 3. **在对话中使用**
 
    直接在 dsh 对话框中告诉 Agent：
-   - **只下原始字幕**：“帮我下载示例视频 `BV1EXAMPLE01` 的字幕”
-   - **下载并润色成文**：“把示例链接 `https://www.bilibili.com/video/BV1EXAMPLE01/?p=2` 的字幕下载下来并润色成 Markdown 文章”
+   - **整理成文章**：“把示例链接 `https://www.bilibili.com/video/BV1EXAMPLE01/?p=2` 整理成 Markdown 文章”
+   - **只要原始字幕**：“帮我下载示例视频 `BV1EXAMPLE01` 的字幕”
    - **润色已有字幕**：“把 `.subtitles/.../transcript.md` 润色成文章”
 
 ## 输出文件与使用边界
@@ -52,12 +52,6 @@ DeepSeek Harness（dsh）插件：下载哔哩哔哩（B 站）视频**已有的
 | `provider` / `model` | 跟随当前会话 | 固定润色使用的模型（两项需同时填写；留空则直接复用当前对话模型）。 |
 | `reasoningEffort` | 跟随当前会话 | 覆盖润色模型的思考强度。 |
 | `timeoutMs` | `300000` | 单阶段模型请求超时时间（毫秒，最小 `1000`）。 |
-
-## 登录与退出登录
-
-扫码得到的 Cookie 由 dsh 宿主的凭据服务保存，不写入项目配置，也不会进入模型请求。凭据写入一旦开始就无法撤回：此时点“取消”只会提示正在保存，需要退出当前账号请用“退出登录”。
-
-同一页面里再次发起登录会让尚未完成的旧会话失效；退出登录会先作废未提交的会话，等已经开始的保存落地后再删除凭据，删除失败会如实报错。停用插件或重启 dsh 不会删除已有凭据，等同保持登录状态。
 
 ## 常见问题
 

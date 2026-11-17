@@ -1,7 +1,7 @@
 {
   "name": "@fukangz/dsh-bilibili-subtitles",
   "version": "0.1.2",
-  "description": "DeepSeek Harness（dsh）插件：下载 B 站已有中文字幕，按讲述脉络切分章节、修顺零散台词，生成忠实原话、带原片跳转链接的 Markdown 全文",
+  "description": "DeepSeek Harness（dsh）插件：把 B 站长视频整理成忠实原话、带原片跳转链接的 Markdown 全文，基于已有中文字幕切分章节、修顺零散台词",
   "license": "MIT",
   "repository": {
     "type": "git",

@@ -1,6 +1,6 @@
 # B 站中文字幕润色
 
-本项目下载现有中文字幕，并按用户要求将原始字幕整理为文章。core、Pi、CLI 与 DeepSeek Harness（dsh）共用以下领域含义，不按入口另造同义词。
+本项目基于 B 站视频已有的中文字幕，把视频整理成可读全文，分为两步：下载保存原始字幕，润色按用户要求将原始字幕生成润色文章。core、Pi、CLI 与 DeepSeek Harness（dsh）共用以下领域含义，不按入口另造同义词。
 
 本文只定义术语；组件与数据流见 [架构说明](docs/architecture.md)，重要选择及其理由见 [架构决策索引](docs/adr/README.md)，确切字段和输入规则见 [Core 文档](packages/core/README.md)。忠实性描述的是润色目标，不表示代码可以证明模型绝无遗漏或错误。
 

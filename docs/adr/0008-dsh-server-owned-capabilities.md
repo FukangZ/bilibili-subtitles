@@ -18,4 +18,4 @@ status: accepted
 - 登录与退出登录可以并发触发，写入按会话串行提交，保存阶段不可取消，界面会提示等待；这保证最终状态可解释，但队列只属于当前实例，不是跨实例事务。
 - “已登录”只表示存在可读凭据，不表示远端仍有效；会话标识不代替授权。
 
-实现见 `packages/dsh/src/login.ts`、`credentials.ts`、`fs.ts`、`model.ts`，登录竞争的回归见 `packages/dsh/tests/login.test.ts`。凭据隔离与迁移见 [0010](0010-user-scoped-cookie-storage.md)，操作步骤与时序见 [dsh README](../../packages/dsh/README.md#登录与退出登录)。
+跨入口的凭据隔离与旧配置迁移另见 [0010](0010-user-scoped-cookie-storage.md)。

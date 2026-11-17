@@ -1,12 +1,12 @@
 # 贡献指南
 
-公共开发约定集中于本文。背景材料：术语见 [GLOSSARY.md](GLOSSARY.md)，系统组成见 [架构说明](docs/architecture.md)，设计理由见 [docs/adr/](docs/adr/)，安全边界与漏洞报告见 [安全政策](SECURITY.md)。改动与既有决策冲突时，在 PR 里说明理由并更新对应 ADR。
+公共开发约定集中于本文。背景材料：术语见 [GLOSSARY.md](GLOSSARY.md)，系统组成见 [架构说明](docs/architecture.md)，设计理由见 [docs/adr/](docs/adr/)，安全边界与漏洞报告见 [安全政策](SECURITY.md)。改动与仍有效的决策冲突时，在 PR 里说明理由，并按 [ADR 维护约定](docs/adr/README.md#写作与维护约定)新增取代记录、更新旧记录状态，保留历史论证。
 
 ## 包边界与入口
 
 - `packages/core`：宿主无关 API，对外只有包根和 `./prompts/*` 两个入口，其他包一律走它们。模型名、认证与思考能力由适配层负责；core 只接收 `StageClient`、`ModelInfo`、`Usage`。
 - `packages/pi`：Pi 的 TypeScript 适配，manifest 直接注册 `src/index.ts`。模型预检与思考降级见 `packages/pi/src/model.ts`。
-- `packages/cli`：独立命令 `bili-subs`，经 pi-ai 适配 OpenAI Chat Completions / Responses 与 Anthropic Messages，不需要 Pi Agent 宿主。模型终态与错误转换见 `packages/cli/src/client.ts` 和 [模型协议与结果约定](packages/cli/README.md#模型协议与结果约定)。
+- `packages/cli`：独立命令 `bili-subs`，经 pi-ai 适配 OpenAI Chat Completions / Responses 与 Anthropic Messages，不需要 Pi Agent 宿主。模型终态与错误转换见 `packages/cli/src/client.ts` 和 [ADR-0009](docs/adr/0009-standalone-cli-with-protocol-adapters.md)。
 - `packages/dsh`：DeepSeek Harness 插件，服务端需编译，Web 客户端入口是 `packages/dsh/client.js`。
 - core、CLI、dsh 服务端发布前必须编译出 `dist/`，源码里的相对导入写 `.js` 后缀：Node 只剥离项目内的 TypeScript，不处理 `node_modules` 里的。两阶段编排见 `packages/core/src/polish.ts`。
 - 改下载协议：先读 `packages/core/src/bilibili.ts`、`packages/core/src/download.ts` 和 [字幕协议调研](docs/research/bilibili-subtitle-protocol.md)。接口由 B 站控制，调研记录的是实测行为；当前未计算 WBI 签名。
@@ -54,7 +54,7 @@ npm run verify:packages -- --offline
 
 - 提示词只有两份：`packages/core/prompts/structure.md`、`packages/core/prompts/polish.md`，`loadPrompts()` 按 `import.meta.url` 定位。Pi 在模块加载时读取，评估新提示词前需 `/reload`；CLI 每次 polish 加载；配置则每次工具 / 命令调用时读取。
 - 两阶段都是全文请求，结构先生成、正文后生成；每阶段 JSON 解析或校验失败最多格式修复一次，接口层没有 JSON Schema 约束。网络或上游失败不进入格式修复。CLI / dsh 适配器不额外增加上游重试；Pi 的 `buildStreamOptions` 向宿主传 `maxRetries: 1`，实际重试与计费由宿主决定。保留画面依赖、广告和原意，不做摘要或外语翻译。
-- 对外只吐固定安全消息和受控诊断投影，原始正文不外泄。CLI / Pi 内部仍会按文本识别认证、限流等类别，这是 [ADR-0011](docs/adr/0011-public-errors-and-safe-diagnostics.md) 限定的兼容例外：读取与回显是两件事，新增一类文本分类需先改 ADR。
+- 对外只吐固定安全消息和受控诊断投影，原始正文不外泄。CLI / Pi 内部仍会按文本识别认证、限流等类别，这是 [ADR-0011](docs/adr/0011-public-errors-and-safe-diagnostics.md) 限定的兼容例外：读取与回显是两件事，新增一类文本分类时先核对该决策的边界；若改变既定边界，按 ADR 维护约定新增取代记录。
 - 章节边界按字幕 id 划分而非秒数，同秒允许多条；章节 id、结束边界、标题、元数据和跳转链接由代码生成。改协议时同步检查 `validateStructure`、`validateBodies` 与输入组装。
 - core 区分未报告、部分和完整用量，费用未知时保持缺失；Pi 只在适配边界补齐必需的 cost。CLI 经 pi-ai 把缺报用量规范化为零，所以 CLI 报“完整”不等于供应商如实报告，见 [ADR-0012](docs/adr/0012-reported-usage-and-unknown-cost.md)。失败、取消和格式修复同样累计已报告用量；改动后核对 core polish、CLI client / commands、Pi model / tools 测试与 tool_result 回填。
 - 改格式时同步根 README 的输入输出示例、`packages/core/tests/fixtures/transcript.md` 夹具与解析校验测试；示例只保留这两处，随夹具一起更新。提示词改动要分开评估离线兼容性与真实内容质量。
@@ -72,7 +72,8 @@ npm run verify:packages -- --offline
 
 - 报缺陷时给出包 / Node / 宿主版本、最小合成输入、预期与实际结果。真实 Cookie、API key、用户字幕、原始供应商错误和未经检查的日志都不要贴进 issue；漏洞按 [安全政策](SECURITY.md) 私下报告。
 - 改动保持范围清楚，配套回归测试与文档；PR 说明跑过的命令、结果和未覆盖项。纯文档改动也先 build，再跑 `node --test --test-concurrency=1 scripts/docs.test.mjs`。
-- 该测试检查公共文档的本地链接是否有效、README 原始字幕样例是否与 `packages/core/tests/fixtures/transcript.md` 逐字一致。新增 API 时同时核对 `packages/core/src/index.ts` 与 `packages/core/tests/boundary.test.ts`，导出以代码为准。
+- 该测试检查公共文档的本地链接是否有效、包 README 是否遵守下条规则，以及 README 原始字幕样例是否与 `packages/core/tests/fixtures/transcript.md` 逐字一致。新增 API 时同时核对 `packages/core/src/index.ts` 与 `packages/core/tests/boundary.test.ts`，导出以代码为准。
+- 包 README 面向使用者，只讲安装、使用与集成，不链接 ADR；设计理由留在 [架构决策索引](docs/adr/README.md)。包 README 随 npm 发布，pi.dev、dsh 插件详情和 `node_modules` 里只能访问包内文件，因此指向包外的链接必须写成 `https://github.com/FukangZ/bilibili-subtitles/blob/main/<仓库内路径>`。
 
 ## 发布与交付
 

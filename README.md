@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="./assets/readme/hero.svg" width="100%" alt="bilibili-subtitles：把破碎的 B 站字幕整理为结构清晰、忠实原话的 Markdown 全文">
+  <img src="./assets/readme/hero.svg" width="100%" alt="bilibili-subtitles：把 B 站长视频整理为结构清晰、忠实原话的 Markdown 全文">
 </p>
 
 <p align="center">
@@ -8,20 +8,27 @@
   <a href="https://www.npmjs.com/package/@fukangz/cli-bilibili-subtitles"><img src="https://img.shields.io/npm/v/@fukangz/cli-bilibili-subtitles?style=flat-square&label=cli%20%2B%20skill&color=52525b" alt="cli version"></a>
 </p>
 
-`bilibili-subtitles` 把哔哩哔哩（B 站）视频现有的中文字幕下载到本地；当你明确要求润色时，再通过大模型按讲述脉络**切分章节**、**修顺零散错乱的台词**，并附上每个章节对应的原视频跳转链接，生成一篇像文章一样好读的 Markdown 全文。无论你想自己快速通读长视频，还是把干净的一手文稿交给 AI Agent 继续分析，都可以直接拿来用。
+`bilibili-subtitles` 把哔哩哔哩（B 站）长视频整理成一篇可以直接通读的 Markdown 全文：基于视频已有的中文字幕，按讲述脉络**切分多级章节**、**修顺零散错乱的台词**，完整保留原话细节，并在每个章节旁附上原视频跳转链接。你可以用它快速读完一支长视频，也可以把这份干净的一手文稿交给 AI Agent 继续追问、对比或总结。
 
-> **使用边界**：仅处理视频已有的中文字幕；**默认只下载原始字幕（零模型开销）**，仅在执行润色时调用大模型。不下载音视频、不做本地语音识别、不翻译外语字幕，也不支持 `b23.tv` 短链。
+整理分两步完成，中间保留一份可检查的原始字幕：
+
+1. **下载**：取回视频已有的中文字幕和元数据，保存为 `transcript.md`。只请求 B 站，不调用模型。
+2. **润色**：大模型通读全文，切分章节并修顺正文，生成 `transcript.polished.md`。字幕全文会发给所用模型的提供方，并产生模型费用。
+
+在 Agent 里一句话即可跑完两步；只需要原始文本，或想先手动校正错字再润色时，也可以停在第一步。
+
+> **使用边界**：仅处理视频已有的中文字幕；不下载音视频、不做本地语音识别、不翻译外语字幕，也不支持 `b23.tv` 短链。
 
 ---
 
 ## 你能拿到什么：从碎台词到可读文章
 
-输入一个 **BV 号**或 **B 站视频链接**，工具默认在当前目录的 `.subtitles/` 下按视频标题建好文件夹。下载生成 `transcript.md`，按需润色后在旁边生成 `transcript.polished.md`：
+输入一个 **BV 号**或 **B 站视频链接**，工具默认在当前目录的 `.subtitles/` 下按视频标题建好文件夹。最终产物是 `transcript.polished.md`；它所依据的原始字幕 `transcript.md` 保留在旁边，方便对照核对：
 
 ```text
 .subtitles/<BV号>-<视频标题>/
-├── transcript.md           # 原始字幕：YAML 元数据头 + 逐行时间戳台词
-└── transcript.polished.md  # 精校全文：YAML 元数据头 + 多级章节段落 + [▶ 分:秒] 跳转链接
+├── transcript.md           # 第 1 步·原始字幕：YAML 元数据头 + 逐行时间戳台词
+└── transcript.polished.md  # 第 2 步·精校全文：YAML 元数据头 + 多级章节段落 + [▶ 分:秒] 跳转链接
 ```
 
 <p align="center">
@@ -35,7 +42,7 @@
 3. **完整保留原话细节，不做缩水摘要**：作者的观点、推导过程与具体举例全部保留，不会像摘要工具那样把干货压缩成几条空洞的要点。
 4. **每个章节自带原视频跳转点**：每个章节标题旁都会附上形如 `[▶ 0:35]` 的视频时间链接。先扫读目录和文字定位到感兴趣的部分，需要看演示画面或图表时，点击该节标题旁的链接就能直接跳回原片对应时刻。
 
-想查看文件结构与正文润色效果，可以展开下方示例。`BV1example`、作者、统计与字幕均为合成演示数据，不代表真实下载或性能保证。原始字幕示例完整可解析，由文档测试与测试夹具通过真实 core 入口验证；文章仅展示排版效果，完整元数据约束见 [Core 文档](packages/core/README.md)。
+想查看文件结构与正文润色效果，可以展开下方示例。示例为合成演示数据（`BV1example`、作者、统计与字幕均为虚构）。
 
 <details>
 <summary>查看原始字幕样例（<code>transcript.md</code>）</summary>
@@ -137,8 +144,8 @@ model: opus-5-5
 ### 1. Pi / DeepSeek Harness 插件用法
 
 安装对应插件并完成扫码登录后，直接在对话里告诉 Agent 即可：
-- 只下原始字幕：*“帮我下载 `BV1xx411c7mD` 的字幕”*
-- 下载并润色成文：*“把 `BV1xx411c7mD` 的字幕下载下来并润色成 Markdown 文章”*
+- 整理成文章：*“把 `BV1xx411c7mD` 整理成 Markdown 文章”*
+- 只要原始字幕：*“帮我下载 `BV1xx411c7mD` 的字幕”*
 
 ### 2. 通用 CLI + Skill 安装与用法（适用于其他 Coding Agent）
 
@@ -162,7 +169,7 @@ mkdir -p ~/.agents/skills
 cp -R "$(npm root -g)/@fukangz/cli-bilibili-subtitles/skills/bilibili-subtitles" ~/.agents/skills/
 ```
 
-装好后，你的 Coding Agent 就会按需调用 `bili-subs` 下载或润色字幕；你也可以随时在终端手动执行 `bili-subs download <BV号>` 与 `bili-subs polish <transcriptPath>`。详细参数见 [CLI 文档](packages/cli/README.md)。
+装好后，对 Coding Agent 说 *“把 `BV1xx411c7mD` 整理成 Markdown 文章”*，它会按 Skill 调用 `bili-subs` 先下载、再润色。在终端手动使用时，同样分两步：先运行 `bili-subs download <BV号>`，再把输出的 `transcriptPath` 交给 `bili-subs polish <transcriptPath>`。详细参数见 [CLI 文档](packages/cli/README.md)。
 
 ---
 
@@ -190,35 +197,27 @@ cp -R "$(npm root -g)/@fukangz/cli-bilibili-subtitles/skills/bilibili-subtitles"
 
 ## 工作原理
 
-从输入一个视频链接到生成最终的 Markdown 文章，流程按顺序完成下载与两步润色：
+从输入一个视频链接到生成最终的 Markdown 文章，流程先下载原始字幕，再分结构和正文两个阶段润色：
 
 <p align="center">
-  <img src="./assets/readme/workflow.svg" width="100%" alt="bilibili-subtitles 下载与两步润色流程：下载最佳中文字幕、结构生成切分章节、正文生成顺句修错并挂载原片跳转链接">
+  <img src="./assets/readme/workflow.svg" width="100%" alt="bilibili-subtitles 整理流程（下载 + 两阶段润色）：下载最佳中文字幕、结构生成切分章节、正文生成顺句修错并挂载原片跳转链接">
 </p>
 
 1. **下载原始字幕**：同一个视频如果有多条中文字幕，程序自动按 **“人工上传字幕优先于 AI 字幕、简体优先于繁体”** 挑出最好的一条，连同视频元信息保存为 `transcript.md`。
-2. **第一步（结构生成）**：大模型先通读完整的原始字幕，拟定文章总标题，并顺着讲述者的话题切换划分章节层级（导语、二级与三级章节），标出每一节从哪条字幕开始。
-3. **第二步（正文生成）与组装**：程序把已确定的章节结构和按章节组织的**完整字幕**放入同一次正文请求，由大模型合拢碎句、清理口头禅、结合语境修正同音错字；不是逐章单独调用。最后由代码根据每节起点对应的时间戳挂上 `[▶ 分:秒]` 链接，组装成 `transcript.polished.md`。
+2. **润色·结构生成**：大模型先通读完整的原始字幕，拟定文章总标题，并顺着讲述者的话题切换划分章节层级（导语、二级与三级章节），标出每一节从哪条字幕开始。
+3. **润色·正文生成与组装**：程序把已确定的章节结构和按章节组织的**完整字幕**放入同一次正文请求，由大模型合拢碎句、清理口头禅、结合语境修正同音错字；不是逐章单独调用。最后由代码根据每节起点对应的时间戳挂上 `[▶ 分:秒]` 链接，组装成 `transcript.polished.md`。
 
-两阶段均为全文请求；每阶段仅在 JSON 解析或结构校验失败后最多格式修复一次，通常共两次、最多四次 core 阶段调用。网络或上游失败不触发格式修复；适配器与宿主重试边界见 [架构说明](docs/architecture.md)。
+润色通常调用 2 次大模型（结构、正文各一次全文请求）；某一阶段输出格式不合规时自动修复一次，最多 4 次。
 
 ---
 
-## 仓库开发与延伸文档
+## 参与开发
 
-本仓库使用 npm workspaces 管理各子包（除了上文面向终端用户的 `cli`、`pi`、`dsh` 外，底层共用宿主无关的二次开发核心库 [`@fukangz/core-bilibili-subtitles`](packages/core/README.md)）。最低 Node.js 22，本地开发建议使用 Node.js 24。**全仓检查还需要先准备 Pi 宿主 peer**（当前发布 workflow 使用 `@earendil-works/pi-coding-agent@0.87.1`）；环境准备、自动链接位置及无宿主时的局部验证见 [贡献指南](CONTRIBUTING.md)。依赖和宿主就绪后，在根目录执行：
+本仓库是 npm workspaces monorepo：除上文面向用户的 `cli`、`pi`、`dsh` 外，还包含宿主无关的核心库 [`@fukangz/core-bilibili-subtitles`](packages/core/README.md)，可用于二次集成。
 
-```sh
-npm ci --legacy-peer-deps
-npm run build
-npm run check
-npm test
-```
-
-- **文档总入口**：[按使用、设计与维护目标导航](docs/README.md)
-- **贡献与维护约定**：[贡献指南](CONTRIBUTING.md) · [架构与数据流](docs/architecture.md) · [安全政策](SECURITY.md) · [领域术语](GLOSSARY.md) · [架构决策](docs/adr/) · [MIT 许可证](LICENSE)
-- **使用与集成文档**：[独立 CLI 与通用 Skill](packages/cli/README.md) · [Pi 扩展](packages/pi/README.md) · [dsh 插件](packages/dsh/README.md) · [Core API 与文件格式规范](packages/core/README.md)
-- **背景与维护**：[B 站字幕协议调研](docs/research/bilibili-subtitle-protocol.md) · [CLI 模型协议与结果约定](packages/cli/README.md#模型协议与结果约定) · [按包发布流程](docs/publishing.md)
+- 本地环境、构建测试与提交约定：[贡献指南](CONTRIBUTING.md)
+- 架构、设计决策与维护文档：[文档导航](docs/README.md)
+- [安全政策](SECURITY.md) · [MIT 许可证](LICENSE)
 
 <p align="center">
   <a href="https://github.com/oil-oil/beautify-github-readme"><img src="./assets/readme/made-with-beautify.svg" width="300" alt="README made with beautify-github-readme"></a>

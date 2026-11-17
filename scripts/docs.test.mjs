@@ -3,7 +3,14 @@ import { access, readFile, readdir } from "node:fs/promises";
 import { test } from "node:test";
 
 const root = new URL("../", import.meta.url);
-const documents = ["README.md", "CONTRIBUTING.md", "SECURITY.md", "GLOSSARY.md", ...["core", "pi", "cli", "dsh"].map((name) => `packages/${name}/README.md`)];
+const packageDocuments = ["core", "pi", "cli", "dsh"].map((name) => `packages/${name}/README.md`);
+const documents = ["README.md", "CONTRIBUTING.md", "SECURITY.md", "GLOSSARY.md", ...packageDocuments];
+const repositoryBlob = "https://github.com/FukangZ/bilibili-subtitles/blob/main/";
+
+function links(text) {
+  const prose = text.replace(/```[\s\S]*?```/g, "").replace(/`[^`]*`/g, "");
+  return [...prose.matchAll(/\[[^\]]*\]\(([^\s)]+)\)/g)].map((match) => match[1]);
+}
 
 async function addDocuments(directory) {
   for (const entry of await readdir(new URL(directory, root), { withFileTypes: true })) {
@@ -19,12 +26,28 @@ await addDocuments("docs/");
 test("仓库文档的本地 Markdown 链接指向存在的文件", async () => {
   for (const document of documents) {
     const url = new URL(`../${document}`, import.meta.url);
-    const text = (await readFile(url, "utf8")).replace(/```[\s\S]*?```/g, "").replace(/`[^`]*`/g, "");
-    for (const match of text.matchAll(/\[[^\]]*\]\(([^\s)]+)\)/g)) {
-      const href = match[1];
+    for (const href of links(await readFile(url, "utf8"))) {
       if (/^(https?:|#)/.test(href)) continue;
       const target = new URL(href.split("#")[0], url);
       await assert.doesNotReject(() => access(target), `${document}: ${href}`);
+    }
+  }
+});
+
+// 包 README 随 npm 发布后只剩包内文件；pi.dev、dsh 和本地 node_modules 不会改写相对链接。
+test("包 README 的包外链接使用仓库 main 分支绝对地址、目标存在，且不链接 ADR", async () => {
+  for (const document of packageDocuments) {
+    const url = new URL(`../${document}`, import.meta.url);
+    const packageRoot = new URL("./", url);
+    for (const href of links(await readFile(url, "utf8"))) {
+      assert.ok(!href.includes("docs/adr/"), `${document}: 包 README 不链接 ADR：${href}`);
+      if (href.startsWith(repositoryBlob)) {
+        const target = new URL(decodeURI(href.slice(repositoryBlob.length).split("#")[0]), root);
+        await assert.doesNotReject(() => access(target), `${document}: ${href}`);
+      } else if (!/^(https?:|#)/.test(href)) {
+        const target = new URL(href.split("#")[0], url);
+        assert.ok(target.href.startsWith(packageRoot.href), `${document}: 包外链接需改为 ${repositoryBlob}…：${href}`);
+      }
     }
   }
 });

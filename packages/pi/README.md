@@ -2,10 +2,10 @@
 
 [![npm version](https://img.shields.io/npm/v/@fukangz/pi-bilibili-subtitles)](https://www.npmjs.com/package/@fukangz/pi-bilibili-subtitles)
 
-Pi 扩展：下载哔哩哔哩（B 站）视频**已有的中文字幕**；当你明确要求润色时，再通过大模型按讲述脉络切分章节、修顺零散错乱的台词，并附上每个章节对应的原视频跳转链接，生成一篇忠实原话、像文章一样好读的 Markdown 全文。
+Pi 扩展：把哔哩哔哩（B 站）长视频整理成一篇忠实原话、像文章一样好读的 Markdown 全文。它基于视频已有的中文字幕，按讲述脉络切分章节、修顺零散错乱的台词，并在每个章节旁附上原视频跳转链接。
 
-- **按需润色**：仅下载字幕不调用大模型（零模型开销）；要求润色时才调用当前 Pi 会话模型（或你指定的模型）。
-- **效果预览**：原始字幕与润色文章的完整对比示例见[项目主 README](../../README.md#你能拿到什么从碎台词到可读文章)。
+- **两步完成**：先下载原始字幕，再润色成文。下载不调用模型；润色时调用当前 Pi 会话模型（或你指定的模型）。只需要原始字幕时可以停在第一步。
+- **效果预览**：原始字幕与润色文章的完整对比示例见[项目主 README](https://github.com/FukangZ/bilibili-subtitles/blob/main/README.md#你能拿到什么从碎台词到可读文章)。
 
 ## 快速开始
 
@@ -15,7 +15,7 @@ Pi 扩展：下载哔哩哔哩（B 站）视频**已有的中文字幕**；当�
    pi install npm:@fukangz/pi-bilibili-subtitles
    ```
 
-   安装后向 Agent 注册两个工具：`bilibili_download_subtitle` 按 BV 号或 B 站链接下载原始中文字幕，`bilibili_polish_subtitle` 将下载的字幕忠实润色成文章，并附上原片时间跳转链接。Agent 会按你的请求自行调用。
+   安装后向 Agent 注册两个工具，分别对应整理的两步：`bilibili_download_subtitle` 按 BV 号或 B 站链接下载原始中文字幕，`bilibili_polish_subtitle` 将下载的字幕忠实润色成文章，并附上原片时间跳转链接。Agent 会按你的请求自行调用。
 
 2. **扫码登录 B 站**
 
@@ -24,8 +24,8 @@ Pi 扩展：下载哔哩哔哩（B 站）视频**已有的中文字幕**；当�
 3. **在对话中使用**
 
    直接用自然语言告诉 Pi 你的需求：
-   - **只下原始字幕**：“帮我下载示例视频 `BV1EXAMPLE01` 的字幕”
-   - **下载并润色成文**：“把示例链接 `https://www.bilibili.com/video/BV1EXAMPLE01/?p=2` 的字幕下载下来，并润色成 Markdown 文章”
+   - **整理成文章**：“把示例链接 `https://www.bilibili.com/video/BV1EXAMPLE01/?p=2` 整理成 Markdown 文章”
+   - **只要原始字幕**：“帮我下载示例视频 `BV1EXAMPLE01` 的字幕”
    - **润色已有字幕**：“把 `.subtitles/.../transcript.md` 润色成文章”
 
 ## 输出文件与使用边界
