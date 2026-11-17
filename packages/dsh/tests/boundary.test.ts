@@ -10,8 +10,8 @@ const allowed = new Set(["@fukangz/core-bilibili-subtitles", "@deepseek-ai/schem
 
 test("dsh 包只依赖 core 和 schemastery，运行时不导入 dsh 宿主或 Pi", async () => {
   const manifest = JSON.parse(await readFile(path.join(root, "package.json"), "utf8"));
-  assert.deepEqual(Object.keys(manifest.dependencies).sort(), [...allowed].sort());
-  assert.equal(manifest.peerDependencies, undefined);
+  assert.deepEqual(Object.keys(manifest.dependencies).sort(), ["@fukangz/core-bilibili-subtitles"]);
+  assert.deepEqual(manifest.peerDependencies, { "@deepseek-ai/schemastery": "~3.19.0" });
   assert.equal(manifest.exports["./client"], "./client.js");
   assert.ok(manifest.engines.dsh);
   for (const file of ["dist/", "client.js", "cordis.patch.yml", "locale/", "icon.svg", "README.md"]) {
