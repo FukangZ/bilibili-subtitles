@@ -52,6 +52,6 @@
   "peerDependencies": {
     "@deepseek-ai/schemastery": "~3.19.0"
   },
-  "devDependencies": { "@types/node": "^22.15.30" },
+  "devDependencies": { "@deepseek-ai/schemastery": "~3.19.0", "@types/node": "^22.20.5" },
   "publishConfig": { "access": "public", "registry": "https://registry.npmjs.org/" }
 }

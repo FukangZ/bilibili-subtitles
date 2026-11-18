@@ -74,7 +74,7 @@ node scripts/preflight.mjs cli-v0.1.0 --registry
 
 ## CI 与常规发布
 
-普通 CI 的 Node 24 job 用共享 `.github/actions/prepare/action.yml` 准备 npm `11.5.1`、Pi 宿主 `@earendil-works/pi-coding-agent@0.87.1`，锁文件安装后运行全仓 check / 测试和离线预检。Node 22 job 不安装 Pi 宿主，只 build 与真实 tgz 消费，覆盖声明最低 Node 主版本的宿主无关分发路径，不声称所有宿主组合都兼容。脚本测试使用模拟 registry，无真实账号或模型。
+普通 CI 的 Node 24 job 用共享 `.github/actions/prepare/action.yml` 准备 npm `11.21.3`、Pi 宿主 `@earendil-works/pi-coding-agent@1.5.2`，锁文件安装后运行全仓 check / 测试和离线预检。Node 22 job 不安装 Pi 宿主，只 build 与真实 tgz 消费，覆盖声明最低 Node 主版本的宿主无关分发路径，不声称所有宿主组合都兼容。脚本测试使用模拟 registry，无真实账号或模型。
 
 Pi 的 peer 名称为 `@earendil-works/pi-ai`、`@earendil-works/pi-coding-agent`、`@earendil-works/pi-tui`、`typebox`。`link-peers.mjs` 查找当前 Node 的全局宿主或 pi-web 内嵌宿主；跳过不等于满足 peer。`npm ci --legacy-peer-deps` 避免补装宿主 peers，不能代替 API 兼容性测试。
 
@@ -87,4 +87,4 @@ git tag core-v0.1.1
 git push origin core-v0.1.1
 ```
 
-发布 workflow 使用 Node 24 / npm 11.5.1 / 上述固定 Pi 宿主，在 GitHub 托管 runner 运行 check（含 build）、脚本和 workspace 测试、真实 tgz 验收、单包联网门禁，再只 publish 选定 workspace。只有该 job 有 `id-token: write`，仓库内容仍为只读；不会随标签发布根包、其他包或 GitHub Release。Trusted Publisher 的仓库 / workflow / environment 任一不匹配都可能认证失败；提交 workflow 不代表已经配置完成。
+发布 workflow 使用 Node 24 / npm 11.21.3 / 上述固定 Pi 宿主，在 GitHub 托管 runner 运行 check（含 build）、脚本和 workspace 测试、真实 tgz 验收、单包联网门禁，再只 publish 选定 workspace。只有该 job 有 `id-token: write`，仓库内容仍为只读；不会随标签发布根包、其他包或 GitHub Release。Trusted Publisher 的仓库 / workflow / environment 任一不匹配都可能认证失败；提交 workflow 不代表已经配置完成。

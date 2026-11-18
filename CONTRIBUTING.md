@@ -17,10 +17,10 @@
 最低 Node.js 22.19（`packages/cli` 的 `engines` 下限，本仓库统一按此执行），日常开发与发布使用 Node.js 24。CI 用 24 跑全仓检查与测试，另用 22 构建并在无 Pi 环境下做真实 tarball 消费验证；22 上覆盖的就是这一条路径。
 
 1. 装好 Node.js 24 与 npm，fork / clone 仓库。
-2. 全仓 `check` / `test` 需要一个 Pi 宿主充当 peer。CI 与发布 workflow 共用 `.github/actions/prepare/action.yml`：把 npm 固定到 `11.5.1`（OIDC 发布要求），并全局安装 `@earendil-works/pi-coding-agent@0.87.1`。本地按同一方式装到**当前这个 Node 安装**下：
+2. 全仓 `check` / `test` 需要一个 Pi 宿主充当 peer。CI 与发布 workflow 共用 `.github/actions/prepare/action.yml`，将 npm 固定到 `11.21.3`（满足 OIDC 发布要求），并全局安装 `@earendil-works/pi-coding-agent@1.5.2`。本地按同一方式装到**当前这个 Node 安装**下：
 
    ```sh
-   npm install --global @earendil-works/pi-coding-agent@0.87.1
+   npm install --global @earendil-works/pi-coding-agent@1.5.2
    ```
 
    不需要登录 Pi。

@@ -18,8 +18,8 @@ runs:
     # OIDC requires npm >= 11.5.1; keep all workflow environments aligned.
     - name: Prepare npm
       shell: bash
-      run: npm install --global npm@11.5.1
+      run: npm install --global npm@11.21.3
     - name: Prepare Pi test host
       if: inputs.pi-host == 'true'
       shell: bash
-      run: npm install --global @earendil-works/pi-coding-agent@0.87.1
+      run: npm install --global @earendil-works/pi-coding-agent@1.5.2
