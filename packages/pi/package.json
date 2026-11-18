@@ -33,7 +33,8 @@
   "pi": {
     "extensions": [
       "./src/index.ts"
-    ]
+    ],
+    "image": "https://cdn.jsdelivr.net/gh/FukangZ/bilibili-subtitles@main/assets/readme/hero.svg"
   },
   "scripts": {
     "link-peers": "node scripts/link-peers.mjs",

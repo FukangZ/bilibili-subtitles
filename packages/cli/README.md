@@ -1,5 +1,7 @@
 # @fukangz/cli-bilibili-subtitles
 
+![bilibili-subtitles：把 B 站长视频整理为结构清晰、忠实原话的 Markdown 全文](https://cdn.jsdelivr.net/gh/FukangZ/bilibili-subtitles@main/assets/readme/hero.svg)
+
 [![npm version](https://img.shields.io/npm/v/@fukangz/cli-bilibili-subtitles)](https://www.npmjs.com/package/@fukangz/cli-bilibili-subtitles)
 
 独立的命令行工具 `bili-subs`（附带通用 Agent Skill）：把哔哩哔哩（B 站）长视频整理成一篇忠实原话、像文章一样好读的 Markdown 全文。它基于视频已有的中文字幕，按讲述脉络切分章节、修顺零散错乱的台词，并在每个章节旁附上原视频跳转链接。

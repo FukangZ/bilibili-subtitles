@@ -6,6 +6,8 @@ const root = new URL("../", import.meta.url);
 const packageDocuments = ["core", "pi", "cli", "dsh"].map((name) => `packages/${name}/README.md`);
 const documents = ["README.md", "CONTRIBUTING.md", "SECURITY.md", "GLOSSARY.md", ...packageDocuments];
 const repositoryBlob = "https://github.com/FukangZ/bilibili-subtitles/blob/main/";
+// 包 README 的图片走 jsDelivr 取仓库 main 分支文件；已发布版本会一直引用这些路径，不能改名或移动。
+const repositoryCdn = "https://cdn.jsdelivr.net/gh/FukangZ/bilibili-subtitles@main/";
 
 function links(text) {
   const prose = text.replace(/```[\s\S]*?```/g, "").replace(/`[^`]*`/g, "");
@@ -41,8 +43,9 @@ test("包 README 的包外链接使用仓库 main 分支绝对地址、目标存
     const packageRoot = new URL("./", url);
     for (const href of links(await readFile(url, "utf8"))) {
       assert.ok(!href.includes("docs/adr/"), `${document}: 包 README 不链接 ADR：${href}`);
-      if (href.startsWith(repositoryBlob)) {
-        const target = new URL(decodeURI(href.slice(repositoryBlob.length).split("#")[0]), root);
+      const repositoryPrefix = [repositoryBlob, repositoryCdn].find((prefix) => href.startsWith(prefix));
+      if (repositoryPrefix) {
+        const target = new URL(decodeURI(href.slice(repositoryPrefix.length).split("#")[0]), root);
         await assert.doesNotReject(() => access(target), `${document}: ${href}`);
       } else if (!/^(https?:|#)/.test(href)) {
         const target = new URL(href.split("#")[0], url);
@@ -50,6 +53,12 @@ test("包 README 的包外链接使用仓库 main 分支绝对地址、目标存
       }
     }
   }
+});
+
+test("Pi 包画廊预览图指向仓库内存在的文件", async () => {
+  const { pi } = JSON.parse(await readFile(new URL("packages/pi/package.json", root), "utf8"));
+  assert.ok(pi.image.startsWith(repositoryCdn), `pi.image 需使用 ${repositoryCdn}…：${pi.image}`);
+  await assert.doesNotReject(() => access(new URL(pi.image.slice(repositoryCdn.length), root)), pi.image);
 });
 
 test("README 原始字幕示例与独立合成夹具一致，真实 core 入口可解析并往返", async () => {
